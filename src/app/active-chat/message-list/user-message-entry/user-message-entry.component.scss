@@ -1,0 +1,26 @@
+:host {
+  width: 100%;
+}
+
+.message-container {
+  display: flex;
+  justify-content: flex-end;
+  .message {
+    background-color: #747474;
+    padding: 10px;
+    border-radius: 10px;
+    margin: 20px;
+    width: 50%;
+    max-width: 100%;
+  }
+}
+
+.user-message-reactions-container {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 10px;
+  border-radius: 10px;
+  width: 100%;
+  max-width: 100%;
+}

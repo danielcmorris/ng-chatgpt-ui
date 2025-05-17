@@ -1,0 +1,38 @@
+:host {
+  display: block;
+}
+
+.chat-input-container {
+  display: flex;
+  flex-direction: column;
+  height: 200px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.chat-input-editable-area {
+  flex-grow: 1;
+  padding: 10px;
+  overflow-y: auto;
+  min-height: 30px;
+  outline: none;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  width: 50%;
+
+  &:empty:before {
+    content: attr(placeholder);
+    color: #aaa;
+    pointer-events: none;
+    display: block;
+  }
+}
+
+.chat-input-action-buttons {
+  display: flex;
+  justify-content: flex-end;
+  padding: 8px;
+}
+
+button[mat-flat-button] {}
