@@ -1,11 +1,13 @@
-@for (message of messages(); track message.id) {
-  <div class="message-list-item">
-    <div class="message-list-item-content">
-      @if (message.role === 'user'  ) {
-        <app-user-message-entry [message]="message"></app-user-message-entry>
-      } @else {
-        <app-assistant-message-entry [message]="message"></app-assistant-message-entry>
-      }
+<div class="message-list-scroll-container" #scrollContainer>
+  @for (message of messages(); track message.id) {
+    <div class="message-list-item">
+      <div class="message-list-item-content">
+        @if (message.role === 'user') {
+          <app-user-message-entry [message]="message"></app-user-message-entry>
+        } @else {
+          <app-assistant-message-entry [message]="message"></app-assistant-message-entry>
+        }
+      </div>
     </div>
-  </div>
-}
+  }
+</div>

@@ -1,3 +1,22 @@
 :host {
   display: block;
 }
+
+.message-list-scroll-container {
+  height: 100%; // Or a specific max-height like 500px
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+
+  // Hide scrollbar for WebKit browsers (Chrome, Safari, Edge)
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  // Hide scrollbar for Firefox
+  scrollbar-width: none; // Firefox
+}
+
+.message-list-item {
+  // Existing styles, or add new ones as needed
+}

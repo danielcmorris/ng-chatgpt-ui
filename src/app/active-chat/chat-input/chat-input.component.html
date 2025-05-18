@@ -1,9 +1,10 @@
 <div class="chat-input-container">
   <div
+    #messageInput
     class="chat-input-editable-area"
     contenteditable="true"
     placeholder="Type your message here..."
-    #messageInput
+    (keydown.enter)="sendMessage(); $event.preventDefault()"
   ></div>
   <div class="chat-input-action-buttons">
     <button mat-flat-button color="primary" (click)="sendMessage()">Send</button>

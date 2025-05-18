@@ -17,3 +17,17 @@
     max-width: 100%;
   }
 }
+
+.thinking-animation {
+  opacity: 0.7;
+  animation: pulseAnimation 1.5s infinite ease-in-out;
+}
+
+@keyframes pulseAnimation {
+  0%, 100% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 1;
+  }
+}
