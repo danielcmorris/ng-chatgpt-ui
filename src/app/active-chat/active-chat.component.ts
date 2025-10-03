@@ -15,9 +15,15 @@ export class ActiveChatComponent {
   public messages = signal<MessageEntry[]>([]);
   private readonly chatGptService = inject(ChatGptService);
 
+  private threadId: string = '';
   public onMessage(message: MessageEntry): void {
+    if (this.threadId) {
+      message.threadId = this.threadId;
+    }
     this.messages.update((messages) => [...messages, message]);
+
     this.chatGptService.sendMessage(message).subscribe((response) => {
+      this.threadId = response.threadId || this.threadId;
       this.messages.update((messages) => [...messages, response]);
     });
     console.debug('🔥🔥 ', this.messages());

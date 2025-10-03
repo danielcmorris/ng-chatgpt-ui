@@ -1,20 +1,52 @@
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { Observable, of, map } from 'rxjs';
 import { MessageEntry } from '../@models/message-entry';
+import { HttpClient } from '@angular/common/http';
+import { environment } from '../../environments/environment';
+import { MessageReply } from '../@models/message-reply';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ChatGptService {
 
+  private server = environment.server;
+  private sid = 'qtAJz5hEYB7pJoBQCTho';
+  constructor(private http: HttpClient) {
+
+  }
+
+  public getThread(text: string, threadId: string = ''): Observable<any> {
+    let payload = { text: text };
+    let url = `${this.server}/api/AnalyzeText/markdown?sid=${this.sid}&threadId=${threadId}`;
+    return this.http.post(url, payload) as Observable<any>;
+  }
   public sendMessage(message: MessageEntry): Observable<MessageEntry> {
-    return of({
-      id: crypto.randomUUID(),
-      // content: random message
-      content: this.generateRandomMessage(),
-      role: 'assistant',
-      createdAt: new Date(),
-    });
+    return this.getThread(message.content, message.threadId || '') 
+    .pipe(
+      map((data: MessageReply) => {
+        // Process the data and return the desired output
+        let ret: MessageEntry = {
+          id: crypto.randomUUID(),
+          runId: data.runId,
+          threadId: data.threadId,
+          content: data.markdown,
+          role: 'assistant',
+          createdAt: new Date(),
+        }
+        console.log("Return Value", ret);
+        return ret;
+      })
+
+
+    ) 
+    // return of({
+    //   id: crypto.randomUUID(),
+    //   // content: random message
+    //   content: this.generateRandomMessage(),
+    //   role: 'assistant',
+    //   createdAt: new Date(),
+    // });
   }
 
   private generateRandomMessage(): string {

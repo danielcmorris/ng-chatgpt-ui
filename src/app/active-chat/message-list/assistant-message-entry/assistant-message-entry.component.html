@@ -1,7 +1,7 @@
 <div class="assistant-message-entry">
   <div class="message-container">
     <div class="message">
-      <p [class.thinking-animation]="isThinking()">{{ displayedContent() }}</p>
+      <div [class.thinking-animation]="isThinking()" [innerHTML]="displayedContent()"> </div>
     </div>
   </div>
 </div>

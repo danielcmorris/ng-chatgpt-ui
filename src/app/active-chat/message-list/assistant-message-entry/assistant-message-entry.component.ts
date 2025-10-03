@@ -15,12 +15,12 @@ export class AssistantMessageEntryComponent implements OnDestroy {
   public isThinking: WritableSignal<boolean> = signal(false);
   private animationTimeoutId: any; // Renamed from typingTimeoutId for clarity
 
-  private readonly BASE_TYPING_SPEED_MS = 50;
+  private readonly BASE_TYPING_SPEED_MS = 150;
   private readonly MAX_RANDOM_DELAY_MS = 100;
   private readonly MIN_WORDS_PER_CHUNK = 1;
-  private readonly MAX_WORDS_PER_CHUNK = 3;
+  private readonly MAX_WORDS_PER_CHUNK = 5;
   private readonly THINKING_TEXT = "Generating...";
-  private readonly THINKING_DURATION_MS = 3000; // 1.5 seconds for thinking animation
+  private readonly THINKING_DURATION_MS = 1000; // 1.5 seconds for thinking animation
 
   constructor() {
     effect(() => {
