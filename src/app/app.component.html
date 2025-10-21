@@ -1,8 +1,9 @@
 <mat-toolbar sticky>
-  <button mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon" (click)="drawer.toggle()">
+  <button mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon"
+    (click)="drawer.toggle()">
     <mat-icon>menu</mat-icon>
   </button>
-  <span>ChatGPT UI</span>
+  <span>Pinnacle Regulation AI</span>
   <span class="example-spacer"></span>
   <button mat-icon-button class="example-icon favorite-icon" aria-label="Example icon-button with heart icon">
     <mat-icon>favorite</mat-icon>
@@ -14,17 +15,26 @@
 
 <mat-drawer-container class="example-container" autosize>
   <mat-drawer #drawer class="example-sidenav" mode="side">
-    <p>Auto-resizing sidenav</p>
-    @if (showFiller) {
-      <p>Lorem, ipsum dolor sit amet consectetur.</p>
-    }
-    <button (click)="showFiller = !showFiller" mat-raised-button>
-      Toggle extra text
+    <button (click)="addItem()" mat-raised-button>
+      Add
     </button>
+    <input [(ngModel)]="newItem" placeholder="Type your question here" />
+    <p>Search History</p>
+    <ul>
+      <li *ngFor="let item of store.items(); let i = index">
+
+        <a href="" (click)="onPick(item, $event)">{{ item }}</a>
+
+        <button mat-icon-button color="warn" (click)="store.removeAt(i)">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </li>
+    </ul>
+
   </mat-drawer>
 
   <div class="example-sidenav-content">
-    <app-active-chat ></app-active-chat>
+    <app-active-chat></app-active-chat>
   </div>
 
 </mat-drawer-container>

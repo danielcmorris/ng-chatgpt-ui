@@ -1,7 +1,9 @@
-import { Component, ElementRef, output, ViewChild } from '@angular/core';
+import { Component, effect, ElementRef, inject, input, output, signal, ViewChild } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MessageEntry } from '../../@models/message-entry';
+import { ListStore } from '../../@services/signal-store.service';
+import { SignalBusService } from '../../@services/signal-bus.service';
 
 @Component({
   selector: 'app-chat-input',
@@ -12,10 +14,31 @@ import { MessageEntry } from '../../@models/message-entry';
 export class ChatInputComponent {
   @ViewChild('messageInput') messageInput?: ElementRef<HTMLDivElement>;
   public message = output<MessageEntry>();
+  readonly store = inject(ListStore); // ✅ inject the service
+
+messageInputValue = signal('');
+
+private bus = inject(SignalBusService);
+  constructor() {
+    effect(() => {
+      // reading these makes the effect react to changes
+      const t = this.bus.tick();
+      console.log('chat-input effect tick=', t);
+      if (t > 0) {
+        const v = this.bus.value();
+        console.log('bus value',v)
+        if (v != null) {
+          this.messageInputValue.set( v);
+         }
+      }
+    });
+  }
   sendMessage(): void {
     const message = this.messageInput?.nativeElement.textContent?.trim();
     if (message) {
       console.log('Sending message:', message);
+      this.store.add(message.trim());
+
       const messageEntry: MessageEntry = {
         id: crypto.randomUUID(),
         content: message,

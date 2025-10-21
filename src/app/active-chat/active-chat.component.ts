@@ -1,8 +1,9 @@
-import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, effect, inject, signal } from '@angular/core';
 import { MessageEntry } from '../@models/message-entry';
 import { ChatGptService } from '../@services/chat-gpt.service';
 import { ChatInputComponent } from './chat-input/chat-input.component';
 import { MessageListComponent } from './message-list/message-list.component';
+import { SignalBusService } from '../@services/signal-bus.service';
 
 @Component({
   selector: 'app-active-chat',
@@ -12,16 +13,21 @@ import { MessageListComponent } from './message-list/message-list.component';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ActiveChatComponent {
+
   public messages = signal<MessageEntry[]>([]);
   private readonly chatGptService = inject(ChatGptService);
 
   private threadId: string = '';
+
+
+
   public onMessage(message: MessageEntry): void {
     if (this.threadId) {
       message.threadId = this.threadId;
     }
     this.messages.update((messages) => [...messages, message]);
-
+     
+      
     this.chatGptService.sendMessage(message).subscribe((response) => {
       this.threadId = response.threadId || this.threadId;
       this.messages.update((messages) => [...messages, response]);

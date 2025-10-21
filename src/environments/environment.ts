@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  server: 'https://production-server-url'
+  server: 'https://server19.apidas.com'
 };

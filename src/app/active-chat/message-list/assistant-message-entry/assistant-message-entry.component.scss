@@ -4,7 +4,7 @@
 :host {
   width: 100%;
 }
-
+ 
 .message-container {
   display: flex;
   justify-content: flex-start;
@@ -13,8 +13,13 @@
     padding: 10px;
     border-radius: 10px;
     margin: 20px;
-    width: 50%;
+    width: 90%;
     max-width: 100%;
+   // Target list items inside .message
+    li {
+      padding: 10px 20px;   // 10px vertical, 20px horizontal for balance
+      list-style-position: inside;
+    }
   }
 }
 

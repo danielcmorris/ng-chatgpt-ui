@@ -5,6 +5,7 @@
 .message-container {
   display: flex;
   justify-content: flex-end;
+
   .message {
     background-color: #747474;
     padding: 10px;
@@ -12,6 +13,35 @@
     margin: 20px;
     width: 50%;
     max-width: 100%;
+
+    // Style the ordered list
+    ol {
+      margin-left: 20px;
+      padding-left: 10px;
+
+      li {
+        padding: 10px 15px;
+        margin-bottom: 10px;
+        border-left: 3px solid #555;
+        list-style-position: inside;
+
+        // optional: make links readable
+        a {
+          color: #4da3ff;
+          text-decoration: none;
+
+          &:hover {
+            text-decoration: underline;
+          }
+        }
+
+        small {
+          display: block;
+          color: #ccc;
+          margin-top: 5px;
+        }
+      }
+    }
   }
 }
 

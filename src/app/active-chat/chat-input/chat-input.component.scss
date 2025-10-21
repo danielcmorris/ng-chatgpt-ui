@@ -19,7 +19,7 @@
   outline: none;
   white-space: pre-wrap;
   word-wrap: break-word;
-  width: 50%;
+  width: 100%;
 
   &:empty:before {
     content: attr(placeholder);
