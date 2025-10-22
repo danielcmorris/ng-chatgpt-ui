@@ -3,3 +3,11 @@
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, sans-serif; }
 a { text-decoration: underline; color: white; }
+
+.small-list{
+    li {
+        padding: 5px 10px;   // 5px vertical, 10px horizontal for balance
+        list-style-position: inside;
+        font-size: 11pt;
+    }
+}

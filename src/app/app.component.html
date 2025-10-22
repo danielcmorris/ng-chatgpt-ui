@@ -5,31 +5,26 @@
   </button>
   <span>Pinnacle Regulation AI</span>
   <span class="example-spacer"></span>
-  <button mat-icon-button class="example-icon favorite-icon" aria-label="Example icon-button with heart icon">
+  <!-- <button mat-icon-button class="example-icon favorite-icon" aria-label="Example icon-button with heart icon">
     <mat-icon>favorite</mat-icon>
   </button>
   <button mat-icon-button class="example-icon" aria-label="Example icon-button with share icon">
     <mat-icon>share</mat-icon>
-  </button>
+  </button> -->
 </mat-toolbar>
 
 <mat-drawer-container class="example-container" autosize>
   <mat-drawer #drawer class="example-sidenav" mode="side">
-    <button (click)="addItem()" mat-raised-button>
+    <!-- <button (click)="addItem()" mat-raised-button>
       Add
     </button>
-    <input [(ngModel)]="newItem" placeholder="Type your question here" />
+    <input [(ngModel)]="newItem" placeholder="Type your question here" /> -->
     <p>Search History</p>
-    <ul>
-      <li *ngFor="let item of store.items(); let i = index">
+  
+      <div style="padding:5px;font-size: .9em;" *ngFor="let item of store.items(); let i = index">
 
-        <a href="" (click)="onPick(item, $event)">{{ item }}</a>
-
-        <button mat-icon-button color="warn" (click)="store.removeAt(i)">
-          <mat-icon>delete</mat-icon>
-        </button>
-      </li>
-    </ul>
+        <a href="" (click)="onPick(item, $event)">{{ item }}</a>&nbsp;&nbsp;<span style="width:10px;cursor: pointer;"  (click)="store.removeAt(i)">&nbsp;x</span>
+      </div>
 
   </mat-drawer>
 
