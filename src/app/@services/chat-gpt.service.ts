@@ -17,7 +17,7 @@ export class ChatGptService {
 
   
   constructor(private http: HttpClient) {
-
+    
   }
 
   public getThread_old(text: string, threadId: string = ''): Observable<any> {
@@ -30,7 +30,7 @@ export class ChatGptService {
 
   public getThread(text: string, threadId: string = ''): Observable<any> {
     let payload = { text: text };
-    let url = `https://localhost:7288/api/QdrantLookup/search`;
+    let url = `${this.server}/api/QdrantLookup/search`;
     return this.http.post(url, payload) as Observable<any>;
   }
 

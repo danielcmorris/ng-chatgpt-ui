@@ -1,0 +1,68 @@
+trigger:
+  - beta  # Adjust to your branch
+
+pool:
+  vmImage: 'ubuntu-latest'  # Use a Linux-based agent
+
+steps:
+  - task: NodeTool@0
+    inputs:
+      versionSpec: '20.x'  # Adjust Node.js version as needed
+    displayName: 'Install Node.js'
+
+  - script: |
+      npm install -g @angular/cli
+      npm install
+    displayName: 'Install Angular CLI & Dependencies'
+
+  - script: npm run build -- --configuration=production 
+    displayName: 'Build Angular App'
+
+  - task: CopyFiles@2
+    inputs:
+      contents: 'dist/**'  # Adjust to match your Angular output directory
+      targetFolder: '$(Build.ArtifactStagingDirectory)'
+    displayName: 'Prepare Artifacts'
+
+  - task: PublishBuildArtifacts@1
+    inputs:
+      pathToPublish: '$(Build.ArtifactStagingDirectory)'
+      artifactName: 'angular-build'
+    displayName: 'Publish Build Artifacts'
+
+  - task: SSH@0
+    inputs:
+      sshEndpoint: 'plive-test'  # Defined in DevOps service connections
+      runOptions: 'commands'
+      commands: |
+        rmdir /s /q morrisai-temp
+        mkdir morrisai-temp
+      displayName: 'Clean Target Directory'
+  
+# Copy files or build artifacts to a remote machine over SSH.
+  - task: CopyFilesOverSSH@0
+    inputs:
+      sshEndpoint: 'plive-test' # string. Required. SSH service connection. 
+      sourceFolder: '$(Build.ArtifactStagingDirectory)/dist/chatgpt-ui/browser' # string. Source folder. 
+      contents: '**' # string. Required. Contents. Default: **.
+      targetFolder: 'morrisai-temp' # string. Target folder. 
+    # Advanced
+      isWindowsOnTarget: true # boolean. Target machine running Windows. Default: false.
+      cleanTargetFolder: true # boolean. Clean target folder. Default: false.
+      #cleanHiddenFilesInTarget: false # boolean. Optional. Use when cleanTargetFolder = true. Remove hidden files in target folder. Default: false.
+      readyTimeout: '20000' # string. Required. SSH handshake timeout. Default: 20000.
+      overwrite: true # boolean. Overwrite. Default: true.
+      #failOnEmptySource: false # boolean. Fail if no files found to copy. Default: false.
+      #flattenFolders: false # boolean. Flatten folders. Default: false.
+      concurrentUploads: '10' # string. Number of concurrent uploads when copying files. Default: 10.
+      #delayBetweenUploads: '50' # string. Delay between queueing uploads (in milliseconds). Default: 50.
+
+  - task: SSH@0
+    inputs:
+      sshEndpoint: 'plive-test'  # Defined in DevOps service connections
+      runOptions: 'commands'
+      commands: |
+        del /f /s /q "morrisai\*"
+        for /d %i in (morrisai\*) do rmdir /s /q "%i"
+        xcopy /e /i /h "morrisai-temp\*" "morrisai\"
+      displayName: 'clean out production folder and put temp files inside'
