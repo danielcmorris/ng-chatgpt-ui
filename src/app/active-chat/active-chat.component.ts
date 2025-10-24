@@ -16,19 +16,20 @@ export class ActiveChatComponent {
 
   public messages = signal<MessageEntry[]>([]);
   private readonly chatGptService = inject(ChatGptService);
-
+  private readonly bus = inject(SignalBusService);
   private threadId: string = '';
 
 
 
   public onMessage(message: MessageEntry): void {
+
     if (this.threadId) {
       message.threadId = this.threadId;
     }
     this.messages.update((messages) => [...messages, message]);
-     
-      
+    this.bus.thinking.set(true);
     this.chatGptService.sendMessage(message).subscribe((response) => {
+      this.bus.thinking.set(false);
       this.threadId = response.threadId || this.threadId;
       this.messages.update((messages) => [...messages, response]);
     });

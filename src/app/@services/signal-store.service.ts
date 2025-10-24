@@ -12,7 +12,13 @@ export class ListStore {
 
   // actions
   add(item: string) {
+
+    this._items.set(this._items().filter(i => i !== item));
+
     this._items.update(list => [...list, item]);
+
+
+
   }
 
   removeAt(index: number) {

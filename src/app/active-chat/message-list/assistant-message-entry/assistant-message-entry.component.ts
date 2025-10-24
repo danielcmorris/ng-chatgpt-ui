@@ -1,6 +1,7 @@
-import { ChangeDetectionStrategy, Component, effect, input, OnDestroy, signal, WritableSignal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, effect, inject, input, OnDestroy, signal, WritableSignal } from '@angular/core';
 import { MessageEntry } from '../../../@models/message-entry';
 import { AssistantMessageReactionsComponent } from './assistant-message-reactions/assistant-message-reactions.component';
+import { SignalBusService } from '../../../@services/signal-bus.service';
 
 @Component({
   selector: 'app-assistant-message-entry',
@@ -21,9 +22,27 @@ export class AssistantMessageEntryComponent implements OnDestroy {
   private readonly MAX_WORDS_PER_CHUNK = 5;
   private readonly THINKING_TEXT = "Generating...";
   private readonly THINKING_DURATION_MS = 1000; // 1.5 seconds for thinking animation
+  private bus = inject(SignalBusService);
 
   constructor() {
+     effect(() => {
+        // reading these makes the effect react to changes
+        const t = this.bus.tick();
+
+        if (t > 0) {
+          const v = this.bus.value();
+
+          if (v != null) {
+            this.isThinking.set(true);
+
+          }
+        }
+      });
+
     effect(() => {
+
+     
+
       const currentMessage = this.message();
       this.clearAllAnimations(); // Clear previous thinking or typing animations
 
@@ -56,14 +75,14 @@ export class AssistantMessageEntryComponent implements OnDestroy {
         let chunk = '';
         let wordsAdded = 0;
 
-        while(currentIndex < words.length && wordsAdded < wordsInChunk) {
-            chunk += words[currentIndex];
-            if (words[currentIndex].trim().length > 0) {
-                wordsAdded++;
-            }
-            currentIndex++;
+        while (currentIndex < words.length && wordsAdded < wordsInChunk) {
+          chunk += words[currentIndex];
+          if (words[currentIndex].trim().length > 0) {
+            wordsAdded++;
+          }
+          currentIndex++;
         }
-        
+
         this.displayedContent.update(content => content + chunk);
 
         if (currentIndex < words.length) {

@@ -16,20 +16,21 @@ export class ChatInputComponent {
   public message = output<MessageEntry>();
   readonly store = inject(ListStore); // ✅ inject the service
 
-messageInputValue = signal('');
+  messageInputValue = signal('');
 
-private bus = inject(SignalBusService);
+  private bus = inject(SignalBusService);
   constructor() {
     effect(() => {
       // reading these makes the effect react to changes
       const t = this.bus.tick();
-      console.log('chat-input effect tick=', t);
+
       if (t > 0) {
         const v = this.bus.value();
-        console.log('bus value',v)
+
         if (v != null) {
-          this.messageInputValue.set( v);
-         }
+
+          this.messageInput!.nativeElement.textContent = v;
+        }
       }
     });
   }

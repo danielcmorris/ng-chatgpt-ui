@@ -8,6 +8,8 @@ export class SignalBusService {
   readonly value = signal<string | null>(null);
   readonly tick = signal(0);
 
+  thinking = signal(false);
+  
   populate(v: string) {
     this.value.set(v);
     this.tick.update(n => n + 1); // one-shot trigger

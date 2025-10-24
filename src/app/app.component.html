@@ -5,6 +5,15 @@
   </button>
   <span>Pinnacle Regulation AI</span>
   <span class="example-spacer"></span>
+
+  @if (bus.thinking()) {
+
+
+  <div class="thinking-animation" [innerHTML]="generatingContent()"> </div>
+
+  }
+
+
   <!-- <button mat-icon-button class="example-icon favorite-icon" aria-label="Example icon-button with heart icon">
     <mat-icon>favorite</mat-icon>
   </button>
@@ -20,11 +29,12 @@
     </button>
     <input [(ngModel)]="newItem" placeholder="Type your question here" /> -->
     <p>Search History</p>
-  
-      <div style="padding:5px;font-size: .9em;" *ngFor="let item of store.items(); let i = index">
 
-        <a href="" (click)="onPick(item, $event)">{{ item }}</a>&nbsp;&nbsp;<span style="width:10px;cursor: pointer;"  (click)="store.removeAt(i)">&nbsp;x</span>
-      </div>
+    <div style="padding:5px;font-size: .9em;" *ngFor="let item of store.items(); let i = index">
+
+      <a href="" (click)="onPick(item, $event)">{{ item }}</a>&nbsp;&nbsp;<span style="width:10px;cursor: pointer;"
+        (click)="store.removeAt(i)">&nbsp;x</span>
+    </div>
 
   </mat-drawer>
 

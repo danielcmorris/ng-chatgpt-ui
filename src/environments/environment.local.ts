@@ -1,4 +1,4 @@
 export const environment = {
   production: false,
-  server: 'https://ai.apidas.com'
+  server: 'https://localhost:7288'
 };
